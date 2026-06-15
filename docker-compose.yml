@@ -1,0 +1,39 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1
+      POSTGRES_DB: taskflow_db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d taskflow_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7
+
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    # --- ДОБАВЛЯЕМ СИНХРОНИЗАЦИЮ ПАПКИ ---
+    volumes:
+      - .:/app  # Связывает текущую папку на Windows с папкой /app внутри Docker
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  worker:
+    build: .
+    command: celery -A celery_app worker --loglevel=info
+    # --- ДЛЯ ВОРКЕРА ТОЖЕ ДОБАВЛЯЕМ ---
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+      - db
