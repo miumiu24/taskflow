@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from app.routers.tasks import router as tasks_router
-from celery_app import send_email_task
+from app.celery_app import send_email_task
 
 app = FastAPI(title="TaskFlow API")
 

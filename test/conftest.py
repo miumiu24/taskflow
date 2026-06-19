@@ -1,10 +1,9 @@
-import pytest
 import pytest_asyncio
 from httpx import AsyncClient, ASGITransport
 
 # Импортируем ОРИГИНАЛЬНЫЕ engine, Base и SessionLocal из твоего database.py
-from database import Base, engine, SessionLocal
-from main import app
+from app.database import Base, engine, SessionLocal
+from app.main import app
 
 @pytest_asyncio.fixture(autouse=True)
 async def prepare_database():

@@ -5,8 +5,8 @@ from typing import List
 
 from sqlalchemy.orm import joinedload
 
-from database import SessionLocal
-from models import Task
+from app.database import SessionLocal
+from app.models import Task
 from app.schemas.tasks import TaskCreate, TaskResponse, TaskStatus
 
 router = APIRouter(prefix="/tasks", tags=["Tasks"])

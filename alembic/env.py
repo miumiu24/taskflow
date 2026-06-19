@@ -8,8 +8,7 @@ from alembic import context
 # --- ВОТ ТУТ МЫ ВСЁ ИСПРАВИЛИ И СДЕЛАЛИ ПРОСТО ---
 
 # Импортируем напрямую из корня, так как файлы лежат прямо здесь!
-from database import Base
-import models
+from app.database import Base
 
 # ------------------------------------------------
 

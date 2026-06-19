@@ -1,5 +1,5 @@
 import pytest
-from models import User
+from app.models import User
 
 
 @pytest.mark.asyncio

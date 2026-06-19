@@ -18,10 +18,11 @@ services:
     build: .
     ports:
       - "8000:8000"
-    command: uvicorn main:app --host 0.0.0.0 --port 8000
-    # --- ДОБАВЛЯЕМ СИНХРОНИЗАЦИЮ ПАПКИ ---
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    environment:
+      - PYTHONPATH=/app
     volumes:
-      - .:/app  # Связывает текущую папку на Windows с папкой /app внутри Docker
+      - .:/app
     depends_on:
       db:
         condition: service_healthy
@@ -30,8 +31,9 @@ services:
 
   worker:
     build: .
-    command: celery -A celery_app worker --loglevel=info
-    # --- ДЛЯ ВОРКЕРА ТОЖЕ ДОБАВЛЯЕМ ---
+    command: celery -A app.celery_app worker --loglevel=infoc    # --- ДЛЯ ВОРКЕРА ТОЖЕ ДОБАВЛЯЕМ ---
+    environment:
+      - PYTHONPATH=/app
     volumes:
       - .:/app
     depends_on:

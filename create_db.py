@@ -1,5 +1,4 @@
-from database import engine, Base
-import models  # Обязательно импортируем наши модели, чтобы Алхимия о них узнала
+from app.database import engine, Base
 
 print("Запуск создания таблиц...")
 

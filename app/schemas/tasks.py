@@ -1,5 +1,5 @@
 from enum import Enum
-from pydantic import BaseModel, Field
+from pydantic import ConfigDict, BaseModel, Field, computed_field
 from datetime import datetime
 from typing import Optional
 
@@ -18,11 +18,15 @@ class TaskCreate(BaseModel):
 
 # Схема для отображения задачи (то, что сервер возвращает пользователю)
 class TaskResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     title: str
     description: Optional[str] = None
-    is_completed: bool  # Меняем строку status на bool флаг!
-    created_at: datetime
+    is_completed: bool  # Это есть в базе
 
-    class Config:
-        from_attributes = True  # Эта строчка разрешает Pydantic читать данные прямо из SQLAlchemy
+    # Добавляем вычисляемое поле для статуса, чтобы API отдавало его красиво
+    @computed_field
+    @property
+    def status(self) -> TaskStatus:
+        return TaskStatus.DONE if self.is_completed else TaskStatus.TODO
