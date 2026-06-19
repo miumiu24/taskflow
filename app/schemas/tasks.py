@@ -1,6 +1,5 @@
 from enum import Enum
 from pydantic import ConfigDict, BaseModel, Field, computed_field
-from datetime import datetime
 from typing import Optional
 
 # 1. Создаем наш список разрешенных статусов
